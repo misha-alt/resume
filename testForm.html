@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма платежных реквизитов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('ваша_картинка.jpg'); /* Замените на путь к вашей картинке */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .form-container {
+            display: none; /* Скрыть форму по умолчанию */
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон формы */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            backdrop-filter: blur(5px);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container" id="form-container">
+    <h2>Платежные реквизиты</h2>
+    <form>
+        <div class="form-group">
+            <label for="name">ФИО</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="card-number">Номер карты</label>
+            <input type="text" id="card-number" name="card-number" required>
+        </div>
+        <div class="form-group">
+            <label for="expiry-date">Срок действия</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+        </div>
+        <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" name="cvv" required>
+        </div>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+
+<script>
+    // Получаем элемент формы
+    const formContainer = document.getElementById('form-container');
+
+    // Добавляем обработчик клика на body
+    document.body.addEventListener('click', function(event) {
+        // Проверяем, если клик был не по форме
+        if (!formContainer.contains(event.target)) {
+            formContainer.style.display = 'block'; // Показываем форму
+        }
+    });
+</script>
+
+</body>
+</html>
