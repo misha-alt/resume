@@ -370,8 +370,8 @@
 
     appendMessage(text, 'user');
     userInput.value = '';
-//https://testdeploysalesmanai-production.up.railway.app/chat
-    fetch('http://localhost:5000/chat', {
+//https://testdeploysalesmanai-production.up.railway.app/chat     http://localhost:5000/chat
+    fetch('https://testdeploysalesmanai-production.up.railway.app/chat', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ user_id: userId, message: text })
