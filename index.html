@@ -344,6 +344,13 @@
   const chatWindow = document.getElementById('chat-window');
   const chatMessages = document.getElementById('chat-messages');
   const userInput = document.getElementById('user-input');
+  
+  userInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // предотвращает перенос строки
+    sendMessage();
+  }
+});
 
   let userId = localStorage.getItem('user_id');
   if (!userId) {
@@ -370,9 +377,9 @@
 
     appendMessage(text, 'user');
     userInput.value = '';
-	//testdeploysalesmanai2-production.up.railway.app
+	//testdeploysalesmanai2-production.up.railway.app      testdeploysalesmanai3-production.up.railway.app
 //https://testdeploysalesmanai-production.up.railway.app/chat     http://localhost:5000/chat
-    fetch('https://testdeploysalesmanai2-production.up.railway.app/chat', {
+    fetch('https://testdeploysalesmanai3-production.up.railway.app/chat', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ user_id: userId, message: text })
