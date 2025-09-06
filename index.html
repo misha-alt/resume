@@ -340,60 +340,72 @@
 </div>
 
 <script>
-  const chatButton = document.getElementById('chat-button');
-  const chatWindow = document.getElementById('chat-window');
-  const chatMessages = document.getElementById('chat-messages');
-  const userInput = document.getElementById('user-input');
-  
-  userInput.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
-    event.preventDefault(); // предотвращает перенос строки
-    sendMessage();
-  }
-});
-
-  let userId = localStorage.getItem('user_id');
-  if (!userId) {
-    userId = 'user_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('user_id', userId);
-  }
-
-  chatButton.onclick = () => {
-    chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
-  };
-
-  function appendMessage(text, sender) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'message ' + sender;
-    msgDiv.textContent = text;
-    chatMessages.appendChild(msgDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    localStorage.setItem('chat-history', chatMessages.innerHTML);
-  }
-
-  function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
-
-    appendMessage(text, 'user');
-    userInput.value = '';
-	//testdeploysalesmanai2-production.up.railway.app      testdeploysalesmanai3-production.up.railway.app
-//https://testdeploysalesmanai-production.up.railway.app/chat     http://localhost:5000/chat
-    fetch('https://testdeploysalesmanai3-production.up.railway.app/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ user_id: userId, message: text })
-    })
-    .then(res => res.json())
-    .then(data => appendMessage(data.reply, 'bot'))
-    .catch(err => appendMessage('Ошибка: ' + err.message, 'bot'));
-  }
-
-  // Загрузка истории при перезагрузке
-  window.onload = () => {
-    const saved = localStorage.getItem('chat-history');
-    if (saved) chatMessages.innerHTML = saved;
-  };
-</script>
+	const chatButton = document.getElementById('chat-button');
+	const chatWindow = document.getElementById('chat-window');
+	const chatMessages = document.getElementById('chat-messages');
+	const userInput = document.getElementById('user-input');
+	
+	// Инициализация userId
+	let userId = localStorage.getItem('user_id');
+	if (!userId) {
+	  userId = 'user_' + Math.random().toString(36).substr(2, 9);
+	  localStorage.setItem('user_id', userId);
+	}
+	
+	// Правильное отображение чата
+	chatWindow.style.display = 'none';
+	
+	chatButton.addEventListener('click', (e) => {
+	  e.stopPropagation(); // чтобы клик по кнопке не закрыл чат сразу
+	  chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+	});
+	
+	// Закрытие чата при клике вне него
+	document.addEventListener('click', (e) => {
+	  if (!chatWindow.contains(e.target) && e.target !== chatButton) {
+		chatWindow.style.display = 'none';
+	  }
+	});
+	
+	// Отправка сообщения по Enter
+	userInput.addEventListener('keydown', function(event) {
+	  if (event.key === 'Enter') {
+		event.preventDefault();
+		sendMessage();
+	  }
+	});
+	
+	function appendMessage(text, sender) {
+	  const msgDiv = document.createElement('div');
+	  msgDiv.className = 'message ' + sender;
+	  msgDiv.textContent = text;
+	  chatMessages.appendChild(msgDiv);
+	  chatMessages.scrollTop = chatMessages.scrollHeight;
+	  localStorage.setItem('chat-history', chatMessages.innerHTML);
+	}
+	
+	function sendMessage() {
+	  const text = userInput.value.trim();
+	  if (!text) return;
+	
+	  appendMessage(text, 'user');
+	  userInput.value = '';
+	
+	  fetch('https://testdeploysalesmanai3-production.up.railway.app/chat', {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({ user_id: userId, message: text })
+	  })
+	  .then(res => res.json())
+	  .then(data => appendMessage(data.reply, 'bot'))
+	  .catch(err => appendMessage('Ошибка: ' + err.message, 'bot'));
+	}
+	
+	// Загрузка истории
+	window.addEventListener('load', () => {
+	  const saved = localStorage.getItem('chat-history');
+	  if (saved) chatMessages.innerHTML = saved;
+	});
+	</script>
 
 </body>
